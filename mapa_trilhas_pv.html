@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mapa das Trilhas — Projeto de Vida</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:wght@700&display=swap');
+:root{
+  --c1:#5f7c5e;--c1l:#a8c5a0;--c1bg:rgba(95,124,94,.12);
+  --c2:#7b6fa0;--c2l:#b8a9d9;--c2bg:rgba(123,111,160,.12);
+  --c3:#b5674d;--c3l:#e8a98f;--c3bg:rgba(181,103,77,.12);
+  --c4:#4a7fa5;--c4l:#8bbdd9;--c4bg:rgba(74,127,165,.12);
+  --bg:#f7f6f2;--surface:#fff;--card:#fff;
+  --text:#2a2a2a;--muted:#6b7280;--border:#e5e7eb;
+  --radius:14px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#2d4a2d 0%,#3d5c5a 60%,#2a3f5f 100%);padding:52px 24px 36px;text-align:center;color:#fff;}
+.badge{display:inline-block;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:99px;padding:4px 16px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:18px;}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(26px,4vw,46px);line-height:1.2;margin-bottom:10px;}
+.hero h1 em{font-style:normal;color:#a8c5a0;}
+.hero p{color:rgba(255,255,255,.7);max-width:540px;margin:0 auto 28px;font-size:14px;line-height:1.7;}
+.stats{display:flex;justify-content:center;gap:36px;flex-wrap:wrap;}
+.stat-n{font-size:28px;font-weight:700;color:#a8c5a0;}
+.stat-l{font-size:11px;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.06em;margin-top:2px;}
+
+/* NAV */
+.nav{display:flex;justify-content:center;gap:8px;padding:20px 16px;flex-wrap:wrap;background:var(--surface);border-bottom:1px solid var(--border);}
+.nav-btn{background:transparent;border:1px solid var(--border);color:var(--muted);padding:8px 18px;border-radius:99px;cursor:pointer;font-size:13px;font-family:inherit;transition:all .2s;}
+.nav-btn:hover,.nav-btn.active{background:var(--c1);color:#fff;border-color:var(--c1);}
+
+/* SECTIONS */
+.section{display:none;padding:28px 16px 60px;max-width:1080px;margin:0 auto;}
+.section.active{display:block;}
+.sec-title{text-align:center;margin-bottom:32px;}
+.sec-title h2{font-size:20px;font-weight:700;margin-bottom:6px;}
+.sec-title p{color:var(--muted);font-size:13px;}
+
+/* TRILHAS GRID */
+.trilhas-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px;}
+.trilha-card{background:var(--card);border-radius:var(--radius);border:1.5px solid var(--border);overflow:hidden;transition:box-shadow .2s,transform .2s;cursor:pointer;}
+.trilha-card:hover{box-shadow:0 8px 32px rgba(0,0,0,.1);transform:translateY(-2px);}
+.trilha-top{padding:20px 20px 14px;}
+.trilha-bar{height:4px;width:100%;}
+.t1 .trilha-bar{background:var(--c1);}
+.t2 .trilha-bar{background:var(--c2);}
+.t3 .trilha-bar{background:var(--c3);}
+.t4 .trilha-bar{background:var(--c4);}
+.trilha-num{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin:14px 0 6px;}
+.trilha-icon{font-size:30px;margin-bottom:10px;}
+.trilha-nome{font-size:16px;font-weight:700;margin-bottom:6px;line-height:1.3;}
+.trilha-eixo{font-size:11px;color:var(--muted);margin-bottom:10px;}
+.trilha-desc{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:14px;}
+.tag-row{display:flex;flex-wrap:wrap;gap:5px;}
+.tag{font-size:11px;padding:3px 9px;border-radius:99px;font-weight:500;}
+.t1 .tag{background:var(--c1bg);color:var(--c1);}
+.t2 .tag{background:var(--c2bg);color:var(--c2);}
+.t3 .tag{background:var(--c3bg);color:var(--c3);}
+.t4 .tag{background:var(--c4bg);color:var(--c4);}
+
+/* EXPANDIDO */
+.expand-toggle{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);}
+.expand-toggle span{transition:transform .2s;display:inline-block;}
+.trilha-details{display:none;padding:0 20px 16px;}
+.trilha-details.open{display:block;}
+.detail-section{margin-top:14px;}
+.detail-label{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:600;margin-bottom:8px;display:flex;align-items:center;gap:5px;}
+.detail-list{list-style:none;}
+.detail-list li{font-size:12px;color:#444;padding:4px 0;border-bottom:1px solid #f3f3f3;display:flex;align-items:flex-start;gap:6px;}
+.detail-list li::before{content:'•';color:var(--muted);flex-shrink:0;margin-top:1px;}
+.strat-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px;}
+.strat-tag{font-size:11px;padding:3px 9px;border-radius:99px;background:var(--bg);border:1px solid var(--border);color:var(--muted);}
+
+/* FEEDBACK */
+.feedback-section{border-top:1px solid var(--border);padding:14px 20px 0;background:var(--bg);}
+.feedback-section h4{font-size:12px;font-weight:600;margin-bottom:10px;color:var(--text);}
+.stars-row{display:flex;gap:5px;margin-bottom:10px;}
+.star{font-size:20px;cursor:pointer;opacity:.3;transition:all .15s;color:#f59e0b;}
+.star.on{opacity:1;}
+.fb-textarea{width:100%;background:#fff;border:1px solid var(--border);border-radius:8px;font-family:inherit;font-size:12px;padding:8px;resize:vertical;min-height:70px;color:var(--text);outline:none;transition:border-color .2s;}
+.fb-textarea:focus{border-color:var(--c1);}
+.fb-btn{display:inline-flex;align-items:center;gap:6px;background:var(--c1);color:#fff;border:none;border-radius:99px;padding:8px 18px;font-size:12px;font-family:inherit;font-weight:600;cursor:pointer;margin-top:8px;transition:opacity .2s;}
+.fb-btn:hover{opacity:.85;}
+.fb-ok{display:none;color:var(--c1);font-size:11px;margin-top:6px;}
+.fb-ok.show{display:block;}
+.fb-saved{font-size:11px;color:var(--muted);margin-top:6px;display:none;}
+.fb-saved.show{display:block;}
+
+/* PERCURSO */
+.timeline{position:relative;max-width:700px;margin:0 auto;}
+.timeline::before{content:'';position:absolute;left:28px;top:0;bottom:0;width:2px;background:var(--border);}
+.tl-item{display:flex;gap:20px;margin-bottom:36px;position:relative;}
+.tl-dot{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;z-index:1;border:3px solid var(--bg);}
+.tl-item:nth-child(1) .tl-dot{background:var(--c1bg);border-color:var(--c1l);}
+.tl-item:nth-child(2) .tl-dot{background:var(--c2bg);border-color:var(--c2l);}
+.tl-item:nth-child(3) .tl-dot{background:var(--c3bg);border-color:var(--c3l);}
+.tl-item:nth-child(4) .tl-dot{background:var(--c4bg);border-color:var(--c4l);}
+.tl-item:nth-child(5) .tl-dot{background:#fef3c7;border-color:#f59e0b;}
+.tl-content{background:var(--card);border-radius:var(--radius);padding:18px;border:1px solid var(--border);flex:1;}
+.tl-fase{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:4px;}
+.tl-title{font-size:16px;font-weight:700;margin-bottom:6px;}
+.tl-desc{font-size:13px;color:var(--muted);line-height:1.6;}
+
+/* PAINEL GERAL */
+.painel-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:24px;}
+.painel-card{background:var(--card);border-radius:var(--radius);padding:20px;border:1px solid var(--border);text-align:center;}
+.painel-n{font-size:36px;font-weight:700;margin-bottom:4px;}
+.painel-l{font-size:12px;color:var(--muted);}
+.painel-stars-display{font-size:18px;margin-top:8px;}
+.feedback-list{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);overflow:hidden;}
+.fb-list-header{padding:14px 18px;border-bottom:1px solid var(--border);font-size:13px;font-weight:600;}
+.fb-list-item{padding:12px 18px;border-bottom:1px solid var(--border);font-size:13px;}
+.fb-list-item:last-child{border-bottom:none;}
+.fb-list-item .fb-trilha{font-size:11px;font-weight:600;margin-bottom:4px;}
+.fb-list-item .fb-comment{color:var(--muted);font-size:12px;}
+.fb-empty{padding:24px;text-align:center;color:var(--muted);font-size:13px;}
+
+/* SOBRE */
+.sobre-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;}
+.sobre-card{background:var(--card);border-radius:var(--radius);padding:22px;border:1px solid var(--border);}
+.sobre-card h3{font-size:14px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:7px;}
+.sobre-card p,.sobre-card li{font-size:13px;color:var(--muted);line-height:1.7;}
+.sobre-card ul{padding-left:16px;}
+.link-btn{display:inline-flex;align-items:center;gap:7px;background:var(--c1bg);border:1px solid var(--c1l);color:var(--c1);border-radius:99px;padding:9px 18px;font-size:13px;text-decoration:none;margin-top:14px;transition:background .2s;}
+.link-btn:hover{background:var(--c1);color:#fff;}
+
+footer{text-align:center;padding:20px;color:var(--muted);font-size:12px;border-top:1px solid var(--border);background:var(--surface);}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="badge">Produto Educacional · Dissertação PPGEN/UTFPR · 2026</div>
+  <h1>Guia de Trilhas Formativas<br><em>Projeto de Vida</em></h1>
+  <p>Percursos formativos baseados nas necessidades identificadas junto a docentes da rede estadual do Paraná, fundamentado na ANT e no TD&E.</p>
+  <div class="stats">
+    <div class="stat"><div class="stat-n">4</div><div class="stat-l">Trilhas formativas</div></div>
+    <div class="stat"><div class="stat-n">16</div><div class="stat-l">Estratégias</div></div>
+    <div class="stat"><div class="stat-n">ANT</div><div class="stat-l">Abbad & Mourão (2012)</div></div>
+    <div class="stat"><div class="stat-n">TD&E</div><div class="stat-l">Abbad, Zerbini & Mourão (2021)</div></div>
+  </div>
+</div>
+
+<nav class="nav">
+  <button class="nav-btn active" onclick="show('trilhas',this)">📚 Trilhas</button>
+  <button class="nav-btn" onclick="show('percurso',this)">🗺️ Percurso</button>
+  <button class="nav-btn" onclick="show('painel',this)">📊 Painel de Feedbacks</button>
+  <button class="nav-btn" onclick="show('sobre',this)">ℹ️ Sobre</button>
+</nav>
+
+<!-- TRILHAS -->
+<section class="section active" id="trilhas">
+  <div class="sec-title">
+    <h2>As 4 Trilhas Formativas</h2>
+    <p>Clique em cada trilha para ver conteúdos, recursos, estratégias e deixar seu feedback</p>
+  </div>
+  <div class="trilhas-grid">
+
+    <!-- T1 -->
+    <div class="trilha-card t1">
+      <div class="trilha-bar"></div>
+      <div class="trilha-top">
+        <div class="trilha-num">Trilha 01</div>
+        <div class="trilha-icon">📖</div>
+        <div class="trilha-nome">Fundamentos do Projeto de Vida</div>
+        <div class="trilha-eixo">Eixo: Conhecimentos · ANT — Nível organizacional e curricular</div>
+        <div class="trilha-desc">Promover a compreensão dos fundamentos teóricos e curriculares do componente Projeto de Vida, oferecendo ao docente referências conceituais e pedagógicas.</div>
+        <div class="tag-row"><span class="tag">Conhecimentos</span><span class="tag">BNCC</span><span class="tag">Currículo</span></div>
+      </div>
+      <div class="expand-toggle" onclick="toggle(this)">Ver conteúdos e dar feedback <span>▼</span></div>
+      <div class="trilha-details">
+        <div class="detail-section">
+          <div class="detail-label">📋 Conteúdos</div>
+          <ul class="detail-list">
+            <li>Histórico e fundamentos do componente Projeto de Vida</li>
+            <li>Diretrizes da BNCC e do Referencial Curricular do Paraná</li>
+            <li>Protagonismo juvenil, autoconhecimento e desenvolvimento integral</li>
+            <li>Competências e habilidades associadas ao componente</li>
+            <li>Relação entre Projeto de Vida e a Lei n.º 13.415/2017</li>
+          </ul>
+        </div>
+        <div class="detail-section">
+          <div class="detail-label">📁 Recursos</div>
+          <ul class="detail-list">
+            <li>Textos acadêmicos selecionados</li>
+            <li>Documentos oficiais (BNCC, DCN, RCP)</li>
+            <li>Vídeos institucionais MEC/SEED-PR</li>
+            <li>Caderno de orientações SEED-PR 2021</li>
+            <li>Banco de referências bibliográficas comentadas</li>
+          </ul>
+        </div>
+        <div class="detail-section">
+          <div class="detail-label">⚡ Estratégias Formativas</div>
+          <div class="strat-tags">
+            <span class="strat-tag">Leituras orientadas</span>
+            <span class="strat-tag">Seminários temáticos</span>
+            <span class="strat-tag">Análise de documentos curriculares</span>
+            <span class="strat-tag">Estudos de caso</span>
+            <span class="strat-tag">Grupos de discussão online</span>
+            <span class="strat-tag">Webinários com especialistas</span>
+          </div>
+        </div>
+      </div>
+      <div class="feedback-section">
+        <h4>✍️ Seu feedback sobre esta trilha</h4>
+        <div class="stars-row" id="stars-t1">
+          <span class="star" onclick="rate('t1',1)">★</span>
+          <span class="star" onclick="rate('t1',2)">★</span>
+          <span class="star" onclick="rate('t1',3)">★</span>
+          <span class="star" onclick="rate('t1',4)">★</span>
+          <span class="star" onclick="rate('t1',5)">★</span>
+        </div>
+        <textarea class="fb-textarea" id="fb-t1" placeholder="O que você achou desta trilha? Quais conteúdos foram mais relevantes para sua prática?"></textarea>
+        <button class="fb-btn" onclick="salvar('t1','Trilha 01 — Fundamentos do Projeto de Vida')">💾 Enviar feedback</button>
+        <div class="fb-ok" id="ok-t1">✅ Feedback enviado! Obrigada pela sua participação.</div>
+      </div>
+    </div>
+
+    <!-- T2 -->
+    <div class="trilha-card t2">
+      <div class="trilha-bar"></div>
+      <div class="trilha-top">
+        <div class="trilha-num">Trilha 02</div>
+        <div class="trilha-icon">🧠</div>
+        <div class="trilha-nome">Competências Socioemocionais</div>
+        <div class="trilha-eixo">Eixo: Habilidades e Atitudes · ANT — Nível individual</div>
+        <div class="trilha-desc">Desenvolver competências socioemocionais nos docentes, capacitando-os para a mediação de práticas reflexivas e para o acompanhamento dos processos de autoconhecimento dos estudantes.</div>
+        <div class="tag-row"><span class="tag">Habilidades</span><span class="tag">CASEL</span><span class="tag">Atitudes</span></div>
+      </div>
+      <div class="expand-toggle" onclick="toggle(this)">Ver conteúdos e dar feedback <span>▼</span></div>
+      <div class="trilha-details">
+        <div class="detail-section">
+          <div class="detail-label">📋 Conteúdos</div>
+          <ul class="detail-list">
+            <li>Fundamentos das competências socioemocionais (CASEL, BNCC)</li>
+            <li>Escuta ativa, empatia e comunicação não violenta</li>
+            <li>Mediação de conflitos e manejo de situações sensíveis</li>
+            <li>Desenvolvimento socioemocional na adolescência</li>
+            <li>Autocuidado e regulação emocional docente</li>
+          </ul>
+        </div>
+        <div class="detail-section">
+          <div class="detail-label">📁 Recursos</div>
+          <ul class="detail-list">
+            <li>Textos sobre inteligência emocional (Goleman, CASEL)</li>
+            <li>Materiais de formação socioemocional SEED-PR</li>
+            <li>Ferramentas de autoavaliação docente</li>
+            <li>Vídeos de boas práticas em sala de aula</li>
+            <li>Caderno de registros reflexivos</li>
+          </ul>
+        </div>
+        <div class="detail-section">
+          <div class="detail-label">⚡ Estratégias Formativas</div>
+          <div class="strat-tags">
+            <span class="strat-tag">Oficinas práticas vivenciais</span>
+            <span class="strat-tag">Dinâmicas de grupo reflexivas</span>
+            <span class="strat-tag">Estudos de caso contextualizados</span>
+            <span class="strat-tag">Simulações pedagógicas</span>
+            <span class="strat-tag">Grupos de reflexão colaborativa</span>
+            <span class="strat-tag">Rodas de conversa entre docentes</span>
+          </div>
+        </div>
+      </div>
+      <div class="feedback-section">
+        <h4>✍️ Seu feedback sobre esta trilha</h4>
+        <div class="stars-row" id="stars-t2">
+          <span class="star" onclick="rate('t2',1)">★</span>
+          <span class="star" onclick="rate('t2',2)">★</span>
+          <span class="star" onclick="rate('t2',3)">★</span>
+          <span class="star" onclick="rate('t2',4)">★</span>
+          <span class="star" onclick="rate('t2',5)">★</span>
+        </div>
+        <textarea class="fb-textarea" id="fb-t2" placeholder="O que você achou desta trilha? Quais estratégias foram mais úteis para você?"></textarea>
+        <button class="fb-btn" onclick="salvar('t2','Trilha 02 — Competências Socioemocionais')">💾 Enviar feedback</button>
+        <div class="fb-ok" id="ok-t2">✅ Feedback enviado! Obrigada pela sua participação.</div>
+      </div>
+    </div>
+
+    <!-- T3 -->
+    <div class="trilha-card t3">
+      <div class="trilha-bar"></div>
+      <div class="trilha-top">
+        <div class="trilha-num">Trilha 03</div>
+        <div class="trilha-icon">🎯</div>
+        <div class="trilha-nome">Mediação Pedagógica</div>
+        <div class="trilha-eixo">Eixo: Tarefas · ANT — Nível das atividades profissionais</div>
+        <div class="trilha-desc">Capacitar os docentes para a utilização de estratégias pedagógicas diversificadas e contextualizadas, articulando teoria, prática e recursos digitais de forma integrada.</div>
+        <div class="tag-row"><span class="tag">Tarefas</span><span class="tag">Metodologias ativas</span><span class="tag">Práticas</span></div>
+      </div>
+      <div class="expand-toggle" onclick="toggle(this)">Ver conteúdos e dar feedback <span>▼</span></div>
+      <div class="trilha-details">
+        <div class="detail-section">
+          <div class="detail-label">📋 Conteúdos</div>
+          <ul class="detail-list">
+            <li>Metodologias ativas de aprendizagem (PBL, rotação por estações)</li>
+            <li>Planejamento e organização de sequências didáticas</li>
+            <li>Uso de tecnologias digitais no ensino do componente</li>
+            <li>Avaliação formativa no Projeto de Vida</li>
+            <li>Adaptação de recursos ao contexto escolar real</li>
+          </ul>
+        </div>
+        <div class="detail-section">
+          <div class="detail-label">📁 Recursos</div>
+          <ul class="detail-list">
+            <li>Roteiros de sequências didáticas modelo</li>
+            <li>Materiais de metodologias ativas</li>
+            <li>Ferramentas digitais (Padlet, Canva, Forms)</li>
+            <li>Exemplos de práticas documentadas por escolas</li>
+            <li>Banco de atividades do componente Paraná</li>
+          </ul>
+        </div>
+        <div class="detail-section">
+          <div class="detail-label">⚡ Estratégias Formativas</div>
+          <div class="strat-tags">
+            <span class="strat-tag">Oficinas de planejamento colaborativo</span>
+            <span class="strat-tag">Co-planejamento entre docentes</span>
+            <span class="strat-tag">Análise de práticas documentadas</span>
+            <span class="strat-tag">Uso de plataformas digitais educacionais</span>
+            <span class="strat-tag">Laboratório de inovação pedagógica</span>
+            <span class="strat-tag">Portfólio reflexivo de práticas</span>
+          </div>
+        </div>
+      </div>
+      <div class="feedback-section">
+        <h4>✍️ Seu feedback sobre esta trilha</h4>
+        <div class="stars-row" id="stars-t3">
+          <span class="star" onclick="rate('t3',1)">★</span>
+          <span class="star" onclick="rate('t3',2)">★</span>
+          <span class="star" onclick="rate('t3',3)">★</span>
+          <span class="star" onclick="rate('t3',4)">★</span>
+          <span class="star" onclick="rate('t3',5)">★</span>
+        </div>
+        <textarea class="fb-textarea" id="fb-t3" placeholder="O que você achou desta trilha? Quais recursos foram mais aplicáveis à sua realidade escolar?"></textarea>
+        <button class="fb-btn" onclick="salvar('t3','Trilha 03 — Mediação Pedagógica')">💾 Enviar feedback</button>
+        <div class="fb-ok" id="ok-t3">✅ Feedback enviado! Obrigada pela sua participação.</div>
+      </div>
+    </div>
+
+    <!-- T4 -->
+    <div class="trilha-card t4">
+      <div class="trilha-bar"></div>
+      <div class="trilha-top">
+        <div class="trilha-num">Trilha 04</div>
+        <div class="trilha-icon">🤝</div>
+        <div class="trilha-nome">Suporte Institucional</div>
+        <div class="trilha-eixo">Eixo: Condições institucionais · ANT — Nível organizacional</div>
+        <div class="trilha-desc">Fortalecer a dimensão institucional e colaborativa da formação docente, promovendo a integração entre professores, equipe pedagógica e gestão escolar.</div>
+        <div class="tag-row"><span class="tag">Condições institucionais</span><span class="tag">Gestão</span><span class="tag">Redes</span></div>
+      </div>
+      <div class="expand-toggle" onclick="toggle(this)">Ver conteúdos e dar feedback <span>▼</span></div>
+      <div class="trilha-details">
+        <div class="detail-section">
+          <div class="detail-label">📋 Conteúdos</div>
+          <ul class="detail-list">
+            <li>Culturas colaborativas na escola e comunidades de aprendizagem</li>
+            <li>Gestão pedagógica do componente Projeto de Vida</li>
+            <li>Políticas de formação continuada SEED-PR e PPGEN/UTFPR</li>
+            <li>Integração entre equipe escolar e docentes do componente</li>
+            <li>Redes de apoio e compartilhamento de práticas docentes</li>
+          </ul>
+        </div>
+        <div class="detail-section">
+          <div class="detail-label">📁 Recursos</div>
+          <ul class="detail-list">
+            <li>Materiais sobre liderança pedagógica e gestão colaborativa</li>
+            <li>Guias de formação continuada SEED-PR</li>
+            <li>Ferramentas colaborativas (Miro, Padlet, Google Workspace)</li>
+            <li>Rede de docentes do componente no Paraná</li>
+            <li>Repositório de relatos de prática da rede estadual</li>
+          </ul>
+        </div>
+        <div class="detail-section">
+          <div class="detail-label">⚡ Estratégias Formativas</div>
+          <div class="strat-tags">
+            <span class="strat-tag">Grupos de estudos colaborativos</span>
+            <span class="strat-tag">Reuniões pedagógicas temáticas mensais</span>
+            <span class="strat-tag">Mentoria entre pares experientes</span>
+            <span class="strat-tag">Participação em redes de formação estaduais</span>
+            <span class="strat-tag">Relatos de experiência em seminários</span>
+            <span class="strat-tag">Comunidades de prática online</span>
+          </div>
+        </div>
+      </div>
+      <div class="feedback-section">
+        <h4>✍️ Seu feedback sobre esta trilha</h4>
+        <div class="stars-row" id="stars-t4">
+          <span class="star" onclick="rate('t4',1)">★</span>
+          <span class="star" onclick="rate('t4',2)">★</span>
+          <span class="star" onclick="rate('t4',3)">★</span>
+          <span class="star" onclick="rate('t4',4)">★</span>
+          <span class="star" onclick="rate('t4',5)">★</span>
+        </div>
+        <textarea class="fb-textarea" id="fb-t4" placeholder="O que você achou desta trilha? Como o suporte institucional impacta sua prática com o componente PV?"></textarea>
+        <button class="fb-btn" onclick="salvar('t4','Trilha 04 — Suporte Institucional')">💾 Enviar feedback</button>
+        <div class="fb-ok" id="ok-t4">✅ Feedback enviado! Obrigada pela sua participação.</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PERCURSO -->
+<section class="section" id="percurso">
+  <div class="sec-title"><h2>Percurso do Produto Educacional</h2><p>Da pesquisa diagnóstica à síntese final</p></div>
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-dot">🔍</div>
+      <div class="tl-content">
+        <div class="tl-fase">Fase 1 · Diagnóstico</div>
+        <div class="tl-title">Pesquisa com Professores — Google Forms</div>
+        <div class="tl-desc">Aplicação de formulário junto a docentes da rede estadual do Paraná para identificar fragilidades nos componentes do Projeto de Vida. Base da Análise de Necessidades de Treinamento (ANT).</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">📊</div>
+      <div class="tl-content">
+        <div class="tl-fase">Fase 2 · Mapeamento</div>
+        <div class="tl-title">Identificação das Fragilidades por Eixo</div>
+        <div class="tl-desc">Categorização das lacunas nos eixos: Conhecimentos, Habilidades/Atitudes, Tarefas e Condições institucionais — originando as 4 trilhas formativas.</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">🛤️</div>
+      <div class="tl-content">
+        <div class="tl-fase">Fase 3 · Desenvolvimento</div>
+        <div class="tl-title">Construção das 4 Trilhas e 16 Estratégias</div>
+        <div class="tl-desc">Elaboração fundamentada na TD&E (Abbad, Zerbini & Mourão, 2021) e alinhada à BNCC e ao Referencial Curricular do Paraná.</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">💻</div>
+      <div class="tl-content">
+        <div class="tl-fase">Fase 4 · Produto Digital</div>
+        <div class="tl-title">Guia Interativo — GitHub Pages</div>
+        <div class="tl-desc">Publicação do Guia de Trilhas Formativas em plataforma web, com acesso aberto para docentes da rede estadual do Paraná.</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">🌟</div>
+      <div class="tl-content">
+        <div class="tl-fase">Fase 5 · Síntese Criativa</div>
+        <div class="tl-title">Mapa Interativo com Feedback Docente</div>
+        <div class="tl-desc">Painel final do produto educacional — síntese visual das trilhas com coleta de avaliação dos professores participantes da formação.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PAINEL DE FEEDBACKS -->
+<section class="section" id="painel">
+  <div class="sec-title"><h2>Painel de Feedbacks</h2><p>Avaliações registradas pelos professores</p></div>
+  <div class="painel-grid" id="painel-stats">
+    <div class="painel-card"><div class="painel-n" id="total-fb" style="color:var(--c1)">0</div><div class="painel-l">Feedbacks recebidos</div></div>
+    <div class="painel-card"><div class="painel-n" id="media-stars" style="color:#f59e0b">—</div><div class="painel-l">Avaliação média</div><div class="painel-stars-display" id="media-display"></div></div>
+    <div class="painel-card"><div class="painel-n" id="trilha-mais" style="color:var(--c2)">—</div><div class="painel-l">Trilha mais avaliada</div></div>
+  </div>
+  <div class="feedback-list">
+    <div class="fb-list-header">💬 Comentários dos professores</div>
+    <div id="fb-list-body"><div class="fb-empty">Nenhum feedback registrado ainda. Os comentários dos professores aparecerão aqui.</div></div>
+  </div>
+</section>
+
+<!-- SOBRE -->
+<section class="section" id="sobre">
+  <div class="sec-title"><h2>Sobre o Produto Educacional</h2><p>Fundamentação e contexto de produção</p></div>
+  <div class="sobre-grid">
+    <div class="sobre-card">
+      <h3>🎓 Dissertação PPGEN/UTFPR</h3>
+      <p>Produto educacional do Mestrado Profissional em Educação Profissional e Tecnológica — PPGEN/UTFPR, 2026. Voltado à formação de docentes do componente <strong>Projeto de Vida</strong> da rede estadual do Paraná.</p>
+    </div>
+    <div class="sobre-card">
+      <h3>🧪 Referencial Teórico</h3>
+      <ul>
+        <li><strong>ANT</strong> — Análise de Necessidades de Treinamento (Abbad & Mourão, 2012)</li>
+        <li><strong>TD&E</strong> — Treinamento, Desenvolvimento e Educação (Abbad, Zerbini & Mourão, 2021)</li>
+        <li><strong>BNCC</strong> — Base Nacional Comum Curricular (Brasil, 2018)</li>
+        <li><strong>RCP</strong> — Referencial Curricular do Paraná</li>
+      </ul>
+    </div>
+    <div class="sobre-card">
+      <h3>📋 Eixos da ANT</h3>
+      <ul>
+        <li><strong>Conhecimentos</strong> — Trilha 01: Fundamentos</li>
+        <li><strong>Habilidades e Atitudes</strong> — Trilha 02: Socioemocionais</li>
+        <li><strong>Tarefas</strong> — Trilha 03: Mediação Pedagógica</li>
+        <li><strong>Condições institucionais</strong> — Trilha 04: Suporte</li>
+      </ul>
+    </div>
+    <div class="sobre-card">
+      <h3>🔗 Acessar o Guia</h3>
+      <p>O guia completo com todas as trilhas, estratégias e recursos está disponível online para docentes da rede.</p>
+      <a class="link-btn" href="https://tati-prog.github.io/guia-trilhas-pv/" target="_blank">🌐 Guia de Trilhas Formativas</a>
+    </div>
+  </div>
+</section>
+
+<footer>Guia de Trilhas Formativas · Componente Projeto de Vida · PPGEN/UTFPR · 2026</footer>
+
+<script>
+const feedbacks = [];
+const ratings = {t1:0,t2:0,t3:0,t4:0};
+
+function show(id,btn){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  if(id==='painel') renderPainel();
+}
+
+function toggle(el){
+  const card = el.closest('.trilha-card');
+  const det = card.querySelector('.trilha-details');
+  const arr = el.querySelector('span');
+  const open = det.classList.contains('open');
+  det.classList.toggle('open',!open);
+  arr.style.transform = open?'':'rotate(180deg)';
+}
+
+function rate(tid,val){
+  ratings[tid]=val;
+  const stars=document.querySelectorAll(`#stars-${tid} .star`);
+  stars.forEach((s,i)=>s.classList.toggle('on',i<val));
+}
+
+function salvar(tid,nome){
+  const txt=document.getElementById(`fb-${tid}`).value.trim();
+  const nota=ratings[tid];
+  if(!nota&&!txt){alert('Por favor, avalie com estrelas ou escreva um comentário.');return;}
+  feedbacks.push({trilha:nome,nota,txt,data:new Date().toLocaleDateString('pt-BR')});
+  document.getElementById(`ok-${tid}`).classList.add('show');
+  setTimeout(()=>document.getElementById(`ok-${tid}`).classList.remove('show'),4000);
+}
+
+function renderPainel(){
+  document.getElementById('total-fb').textContent=feedbacks.length;
+  if(feedbacks.length===0){
+    document.getElementById('media-stars').textContent='—';
+    document.getElementById('media-display').textContent='';
+    document.getElementById('trilha-mais').textContent='—';
+    document.getElementById('fb-list-body').innerHTML='<div class="fb-empty">Nenhum feedback registrado ainda.</div>';
+    return;
+  }
+  const notas=feedbacks.filter(f=>f.nota>0).map(f=>f.nota);
+  const media=notas.length?( notas.reduce((a,b)=>a+b,0)/notas.length).toFixed(1):'—';
+  document.getElementById('media-stars').textContent=media+'★';
+  const cont={};
+  feedbacks.forEach(f=>{cont[f.trilha]=(cont[f.trilha]||0)+1;});
+  const mais=Object.entries(cont).sort((a,b)=>b[1]-a[1])[0];
+  document.getElementById('trilha-mais').textContent=mais?mais[0].split('—')[1].trim():'—';
+  const html=feedbacks.map(f=>`
+    <div class="fb-list-item">
+      <div class="fb-trilha">${f.trilha} · ${'★'.repeat(f.nota||0)} · ${f.data}</div>
+      <div class="fb-comment">${f.txt||'<em>Sem comentário</em>'}</div>
+    </div>`).join('');
+  document.getElementById('fb-list-body').innerHTML=html;
+}
+</script>
+</body>
+</html>
