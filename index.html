@@ -28,6 +28,21 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .stat-n{font-size:28px;font-weight:700;color:#a8c5a0;}
 .stat-l{font-size:11px;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.06em;margin-top:2px;}
 
+/* BANNER ENCERRAMENTO */
+.banner-encerrado{
+  background:linear-gradient(135deg,#7c4a1e,#a0622a);
+  color:#fff;
+  text-align:center;
+  padding:14px 24px;
+  font-size:13px;
+  font-weight:600;
+  letter-spacing:.02em;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+}
+
 /* NAV */
 .nav{display:flex;justify-content:center;gap:8px;padding:20px 16px;flex-wrap:wrap;background:var(--surface);border-bottom:1px solid var(--border);}
 .nav-btn{background:transparent;border:1px solid var(--border);color:var(--muted);padding:8px 18px;border-radius:99px;cursor:pointer;font-size:13px;font-family:inherit;transition:all .2s;}
@@ -75,20 +90,19 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .strat-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px;}
 .strat-tag{font-size:11px;padding:3px 9px;border-radius:99px;background:var(--bg);border:1px solid var(--border);color:var(--muted);}
 
-/* FEEDBACK */
-.feedback-section{border-top:1px solid var(--border);padding:14px 20px 0;background:var(--bg);}
-.feedback-section h4{font-size:12px;font-weight:600;margin-bottom:10px;color:var(--text);}
-.stars-row{display:flex;gap:5px;margin-bottom:10px;}
-.star{font-size:20px;cursor:pointer;opacity:.3;transition:all .15s;color:#f59e0b;}
-.star.on{opacity:1;}
-.fb-textarea{width:100%;background:#fff;border:1px solid var(--border);border-radius:8px;font-family:inherit;font-size:12px;padding:8px;resize:vertical;min-height:70px;color:var(--text);outline:none;transition:border-color .2s;}
-.fb-textarea:focus{border-color:var(--c1);}
-.fb-btn{display:inline-flex;align-items:center;gap:6px;background:var(--c1);color:#fff;border:none;border-radius:99px;padding:8px 18px;font-size:12px;font-family:inherit;font-weight:600;cursor:pointer;margin-top:8px;transition:opacity .2s;}
-.fb-btn:hover{opacity:.85;}
-.fb-ok{display:none;color:var(--c1);font-size:11px;margin-top:6px;}
-.fb-ok.show{display:block;}
-.fb-saved{font-size:11px;color:var(--muted);margin-top:6px;display:none;}
-.fb-saved.show{display:block;}
+/* FEEDBACK ENCERRADO */
+.feedback-encerrado{
+  border-top:1px solid var(--border);
+  padding:16px 20px;
+  background:#fdf8f0;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-size:12px;
+  color:#92502a;
+}
+.feedback-encerrado .enc-icon{font-size:18px;flex-shrink:0;}
+.feedback-encerrado strong{display:block;font-size:13px;margin-bottom:2px;color:#7c4a1e;}
 
 /* PERCURSO */
 .timeline{position:relative;max-width:700px;margin:0 auto;}
@@ -145,6 +159,11 @@ footer{text-align:center;padding:20px;color:var(--muted);font-size:12px;border-t
   </div>
 </div>
 
+<!-- BANNER DE ENCERRAMENTO -->
+<div class="banner-encerrado">
+  🔒 Coleta de feedbacks encerrada em 20/05/2026 — Obrigada a todos os participantes!
+</div>
+
 <nav class="nav">
   <button class="nav-btn active" onclick="show('trilhas',this)">📚 Trilhas</button>
   <button class="nav-btn" onclick="show('percurso',this)">🗺️ Percurso</button>
@@ -156,7 +175,7 @@ footer{text-align:center;padding:20px;color:var(--muted);font-size:12px;border-t
 <section class="section active" id="trilhas">
   <div class="sec-title">
     <h2>As 4 Trilhas Formativas</h2>
-    <p>Clique em cada trilha para ver conteúdos, recursos, estratégias e deixar seu feedback</p>
+    <p>Clique em cada trilha para ver conteúdos, recursos e estratégias</p>
   </div>
   <div class="trilhas-grid">
 
@@ -171,7 +190,7 @@ footer{text-align:center;padding:20px;color:var(--muted);font-size:12px;border-t
         <div class="trilha-desc">Promover a compreensão dos fundamentos teóricos e curriculares do componente Projeto de Vida, oferecendo ao docente referências conceituais e pedagógicas.</div>
         <div class="tag-row"><span class="tag">Conhecimentos</span><span class="tag">BNCC</span><span class="tag">Currículo</span></div>
       </div>
-      <div class="expand-toggle" onclick="toggle(this)">Ver conteúdos e dar feedback <span>▼</span></div>
+      <div class="expand-toggle" onclick="toggle(this)">Ver conteúdos e estratégias <span>▼</span></div>
       <div class="trilha-details">
         <div class="detail-section">
           <div class="detail-label">📋 Conteúdos</div>
@@ -205,18 +224,9 @@ footer{text-align:center;padding:20px;color:var(--muted);font-size:12px;border-t
           </div>
         </div>
       </div>
-      <div class="feedback-section">
-        <h4>✍️ Seu feedback sobre esta trilha</h4>
-        <div class="stars-row" id="stars-t1">
-          <span class="star" onclick="rate('t1',1)">★</span>
-          <span class="star" onclick="rate('t1',2)">★</span>
-          <span class="star" onclick="rate('t1',3)">★</span>
-          <span class="star" onclick="rate('t1',4)">★</span>
-          <span class="star" onclick="rate('t1',5)">★</span>
-        </div>
-        <textarea class="fb-textarea" id="fb-t1" placeholder="O que você achou desta trilha? Quais conteúdos foram mais relevantes para sua prática?"></textarea>
-        <button class="fb-btn" onclick="salvar('t1','Trilha 01 — Fundamentos do Projeto de Vida')">💾 Enviar feedback</button>
-        <div class="fb-ok" id="ok-t1">✅ Feedback enviado! Obrigada pela sua participação.</div>
+      <div class="feedback-encerrado">
+        <span class="enc-icon">🔒</span>
+        <div><strong>Coleta encerrada em 20/05/2026</strong>Obrigada pela sua participação na pesquisa!</div>
       </div>
     </div>
 
@@ -231,7 +241,7 @@ footer{text-align:center;padding:20px;color:var(--muted);font-size:12px;border-t
         <div class="trilha-desc">Desenvolver competências socioemocionais nos docentes, capacitando-os para a mediação de práticas reflexivas e para o acompanhamento dos processos de autoconhecimento dos estudantes.</div>
         <div class="tag-row"><span class="tag">Habilidades</span><span class="tag">CASEL</span><span class="tag">Atitudes</span></div>
       </div>
-      <div class="expand-toggle" onclick="toggle(this)">Ver conteúdos e dar feedback <span>▼</span></div>
+      <div class="expand-toggle" onclick="toggle(this)">Ver conteúdos e estratégias <span>▼</span></div>
       <div class="trilha-details">
         <div class="detail-section">
           <div class="detail-label">📋 Conteúdos</div>
@@ -265,18 +275,9 @@ footer{text-align:center;padding:20px;color:var(--muted);font-size:12px;border-t
           </div>
         </div>
       </div>
-      <div class="feedback-section">
-        <h4>✍️ Seu feedback sobre esta trilha</h4>
-        <div class="stars-row" id="stars-t2">
-          <span class="star" onclick="rate('t2',1)">★</span>
-          <span class="star" onclick="rate('t2',2)">★</span>
-          <span class="star" onclick="rate('t2',3)">★</span>
-          <span class="star" onclick="rate('t2',4)">★</span>
-          <span class="star" onclick="rate('t2',5)">★</span>
-        </div>
-        <textarea class="fb-textarea" id="fb-t2" placeholder="O que você achou desta trilha? Quais estratégias foram mais úteis para você?"></textarea>
-        <button class="fb-btn" onclick="salvar('t2','Trilha 02 — Competências Socioemocionais')">💾 Enviar feedback</button>
-        <div class="fb-ok" id="ok-t2">✅ Feedback enviado! Obrigada pela sua participação.</div>
+      <div class="feedback-encerrado">
+        <span class="enc-icon">🔒</span>
+        <div><strong>Coleta encerrada em 20/05/2026</strong>Obrigada pela sua participação na pesquisa!</div>
       </div>
     </div>
 
@@ -291,7 +292,7 @@ footer{text-align:center;padding:20px;color:var(--muted);font-size:12px;border-t
         <div class="trilha-desc">Capacitar os docentes para a utilização de estratégias pedagógicas diversificadas e contextualizadas, articulando teoria, prática e recursos digitais de forma integrada.</div>
         <div class="tag-row"><span class="tag">Tarefas</span><span class="tag">Metodologias ativas</span><span class="tag">Práticas</span></div>
       </div>
-      <div class="expand-toggle" onclick="toggle(this)">Ver conteúdos e dar feedback <span>▼</span></div>
+      <div class="expand-toggle" onclick="toggle(this)">Ver conteúdos e estratégias <span>▼</span></div>
       <div class="trilha-details">
         <div class="detail-section">
           <div class="detail-label">📋 Conteúdos</div>
@@ -325,18 +326,9 @@ footer{text-align:center;padding:20px;color:var(--muted);font-size:12px;border-t
           </div>
         </div>
       </div>
-      <div class="feedback-section">
-        <h4>✍️ Seu feedback sobre esta trilha</h4>
-        <div class="stars-row" id="stars-t3">
-          <span class="star" onclick="rate('t3',1)">★</span>
-          <span class="star" onclick="rate('t3',2)">★</span>
-          <span class="star" onclick="rate('t3',3)">★</span>
-          <span class="star" onclick="rate('t3',4)">★</span>
-          <span class="star" onclick="rate('t3',5)">★</span>
-        </div>
-        <textarea class="fb-textarea" id="fb-t3" placeholder="O que você achou desta trilha? Quais recursos foram mais aplicáveis à sua realidade escolar?"></textarea>
-        <button class="fb-btn" onclick="salvar('t3','Trilha 03 — Mediação Pedagógica')">💾 Enviar feedback</button>
-        <div class="fb-ok" id="ok-t3">✅ Feedback enviado! Obrigada pela sua participação.</div>
+      <div class="feedback-encerrado">
+        <span class="enc-icon">🔒</span>
+        <div><strong>Coleta encerrada em 20/05/2026</strong>Obrigada pela sua participação na pesquisa!</div>
       </div>
     </div>
 
@@ -351,7 +343,7 @@ footer{text-align:center;padding:20px;color:var(--muted);font-size:12px;border-t
         <div class="trilha-desc">Fortalecer a dimensão institucional e colaborativa da formação docente, promovendo a integração entre professores, equipe pedagógica e gestão escolar.</div>
         <div class="tag-row"><span class="tag">Condições institucionais</span><span class="tag">Gestão</span><span class="tag">Redes</span></div>
       </div>
-      <div class="expand-toggle" onclick="toggle(this)">Ver conteúdos e dar feedback <span>▼</span></div>
+      <div class="expand-toggle" onclick="toggle(this)">Ver conteúdos e estratégias <span>▼</span></div>
       <div class="trilha-details">
         <div class="detail-section">
           <div class="detail-label">📋 Conteúdos</div>
@@ -385,18 +377,9 @@ footer{text-align:center;padding:20px;color:var(--muted);font-size:12px;border-t
           </div>
         </div>
       </div>
-      <div class="feedback-section">
-        <h4>✍️ Seu feedback sobre esta trilha</h4>
-        <div class="stars-row" id="stars-t4">
-          <span class="star" onclick="rate('t4',1)">★</span>
-          <span class="star" onclick="rate('t4',2)">★</span>
-          <span class="star" onclick="rate('t4',3)">★</span>
-          <span class="star" onclick="rate('t4',4)">★</span>
-          <span class="star" onclick="rate('t4',5)">★</span>
-        </div>
-        <textarea class="fb-textarea" id="fb-t4" placeholder="O que você achou desta trilha? Como o suporte institucional impacta sua prática com o componente PV?"></textarea>
-        <button class="fb-btn" onclick="salvar('t4','Trilha 04 — Suporte Institucional')">💾 Enviar feedback</button>
-        <div class="fb-ok" id="ok-t4">✅ Feedback enviado! Obrigada pela sua participação.</div>
+      <div class="feedback-encerrado">
+        <span class="enc-icon">🔒</span>
+        <div><strong>Coleta encerrada em 20/05/2026</strong>Obrigada pela sua participação na pesquisa!</div>
       </div>
     </div>
 
@@ -460,7 +443,7 @@ footer{text-align:center;padding:20px;color:var(--muted);font-size:12px;border-t
   </div>
   <div class="feedback-list">
     <div class="fb-list-header">💬 Comentários dos professores</div>
-    <div id="fb-list-body"><div class="fb-empty">Nenhum feedback registrado ainda. Os comentários dos professores aparecerão aqui.</div></div>
+    <div id="fb-list-body"><div class="fb-empty">Carregando feedbacks...</div></div>
   </div>
 </section>
 
@@ -503,7 +486,6 @@ footer{text-align:center;padding:20px;color:var(--muted);font-size:12px;border-t
 <script>
 const SUPA_URL = 'https://ylzohezfxihvjgnqqatb.supabase.co';
 const SUPA_KEY = 'sb_publishable_8Acu7oPRc5SkruRuZrUquQ_Yax9xOb5';
-const ratings = {t1:0,t2:0,t3:0,t4:0};
 
 async function supaFetch(path, opts={}) {
   return fetch(SUPA_URL + path, {
@@ -533,41 +515,6 @@ function toggle(el){
   const open = det.classList.contains('open');
   det.classList.toggle('open',!open);
   arr.style.transform = open?'':'rotate(180deg)';
-}
-
-function rate(tid,val){
-  ratings[tid]=val;
-  const stars=document.querySelectorAll(`#stars-${tid} .star`);
-  stars.forEach((s,i)=>s.classList.toggle('on',i<val));
-}
-
-async function salvar(tid,nome){
-  const txt=document.getElementById(`fb-${tid}`).value.trim();
-  const nota=ratings[tid];
-  if(!nota&&!txt){alert('Por favor, avalie com estrelas ou escreva um comentário.');return;}
-  const btn = document.querySelector(`[onclick="salvar('${tid}','${nome}')"]`);
-  btn.textContent='Enviando...';
-  btn.disabled=true;
-  try {
-    const res = await supaFetch('/rest/v1/feedbacks', {
-      method: 'POST',
-      prefer: 'return=minimal',
-      body: JSON.stringify({trilha: nome, nota: nota||null, comentario: txt||null})
-    });
-    if(res.ok){
-      document.getElementById(`ok-${tid}`).classList.add('show');
-      setTimeout(()=>document.getElementById(`ok-${tid}`).classList.remove('show'),4000);
-      document.getElementById(`fb-${tid}`).value='';
-      ratings[tid]=0;
-      document.querySelectorAll(`#stars-${tid} .star`).forEach(s=>s.classList.remove('on'));
-    } else {
-      alert('Erro ao enviar. Tente novamente.');
-    }
-  } catch(e){
-    alert('Erro de conexão. Verifique sua internet.');
-  }
-  btn.textContent='💾 Enviar feedback';
-  btn.disabled=false;
 }
 
 async function renderPainel(){
