@@ -87,6 +87,10 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .detail-list{list-style:none;}
 .detail-list li{font-size:12px;color:#444;padding:4px 0;border-bottom:1px solid #f3f3f3;display:flex;align-items:flex-start;gap:6px;}
 .detail-list li::before{content:'•';color:var(--muted);flex-shrink:0;margin-top:1px;}
+.roteiro-list{list-style:none;}
+.roteiro-list li{font-size:12px;color:#444;padding:6px 0;border-bottom:1px solid #f3f3f3;display:flex;align-items:flex-start;gap:8px;line-height:1.45;}
+.rot-min{flex-shrink:0;min-width:46px;text-align:center;font-size:10px;font-weight:700;color:#fff;background:var(--c4);border-radius:99px;padding:2px 6px;margin-top:1px;}
+.extra-note{font-size:11px;color:var(--muted);font-style:italic;margin-top:8px;}
 .strat-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px;}
 .strat-tag{font-size:11px;padding:3px 9px;border-radius:99px;background:var(--bg);border:1px solid var(--border);color:var(--muted);}
 
@@ -155,7 +159,7 @@ footer{text-align:center;padding:20px;color:var(--muted);font-size:12px;border-t
     <div class="stat"><div class="stat-n">4</div><div class="stat-l">Trilhas formativas</div></div>
     <div class="stat"><div class="stat-n">16</div><div class="stat-l">Estratégias</div></div>
     <div class="stat"><div class="stat-n">ANT</div><div class="stat-l">Abbad & Mourão (2012)</div></div>
-    <div class="stat"><div class="stat-n">TD&E</div><div class="stat-l">Abbad, Zerbini & Mourão (2021)</div></div>
+    <div class="stat"><div class="stat-n">TD&E</div><div class="stat-l">Borges-Andrade, Abbad & Mourão (2006)</div></div>
   </div>
 </div>
 
@@ -186,7 +190,7 @@ footer{text-align:center;padding:20px;color:var(--muted);font-size:12px;border-t
         <div class="trilha-num">Trilha 01</div>
         <div class="trilha-icon">📖</div>
         <div class="trilha-nome">Fundamentos do Projeto de Vida</div>
-        <div class="trilha-eixo">Eixo: Conhecimentos · ANT — Nível organizacional e curricular</div>
+        <div class="trilha-eixo">Eixo: Conhecimentos · ANT — Nível individual</div>
         <div class="trilha-desc">Promover a compreensão dos fundamentos teóricos e curriculares do componente Projeto de Vida, oferecendo ao docente referências conceituais e pedagógicas.</div>
         <div class="tag-row"><span class="tag">Conhecimentos</span><span class="tag">BNCC</span><span class="tag">Currículo</span></div>
       </div>
@@ -219,8 +223,6 @@ footer{text-align:center;padding:20px;color:var(--muted);font-size:12px;border-t
             <span class="strat-tag">Seminários temáticos</span>
             <span class="strat-tag">Análise de documentos curriculares</span>
             <span class="strat-tag">Estudos de caso</span>
-            <span class="strat-tag">Grupos de discussão online</span>
-            <span class="strat-tag">Webinários com especialistas</span>
           </div>
         </div>
       </div>
@@ -268,10 +270,8 @@ footer{text-align:center;padding:20px;color:var(--muted);font-size:12px;border-t
           <div class="strat-tags">
             <span class="strat-tag">Oficinas práticas vivenciais</span>
             <span class="strat-tag">Dinâmicas de grupo reflexivas</span>
-            <span class="strat-tag">Estudos de caso contextualizados</span>
             <span class="strat-tag">Simulações pedagógicas</span>
-            <span class="strat-tag">Grupos de reflexão colaborativa</span>
-            <span class="strat-tag">Rodas de conversa entre docentes</span>
+            <span class="strat-tag">Grupos de reflexão</span>
           </div>
         </div>
       </div>
@@ -317,12 +317,10 @@ footer{text-align:center;padding:20px;color:var(--muted);font-size:12px;border-t
         <div class="detail-section">
           <div class="detail-label">⚡ Estratégias Formativas</div>
           <div class="strat-tags">
-            <span class="strat-tag">Oficinas de planejamento colaborativo</span>
+            <span class="strat-tag">Oficinas de planejamento</span>
+            <span class="strat-tag">Análise de práticas pedagógicas documentadas</span>
             <span class="strat-tag">Co-planejamento entre docentes</span>
-            <span class="strat-tag">Análise de práticas documentadas</span>
             <span class="strat-tag">Uso de plataformas digitais educacionais</span>
-            <span class="strat-tag">Laboratório de inovação pedagógica</span>
-            <span class="strat-tag">Portfólio reflexivo de práticas</span>
           </div>
         </div>
       </div>
@@ -369,12 +367,29 @@ footer{text-align:center;padding:20px;color:var(--muted);font-size:12px;border-t
           <div class="detail-label">⚡ Estratégias Formativas</div>
           <div class="strat-tags">
             <span class="strat-tag">Grupos de estudos colaborativos</span>
-            <span class="strat-tag">Reuniões pedagógicas temáticas mensais</span>
-            <span class="strat-tag">Mentoria entre pares experientes</span>
-            <span class="strat-tag">Participação em redes de formação estaduais</span>
-            <span class="strat-tag">Relatos de experiência em seminários</span>
-            <span class="strat-tag">Comunidades de prática online</span>
+            <span class="strat-tag">Reuniões pedagógicas temáticas</span>
+            <span class="strat-tag">Mentoria entre pares</span>
+            <span class="strat-tag">Participação em redes de formação</span>
           </div>
+        </div>
+        <div class="detail-section">
+          <div class="detail-label">🗓️ Modelo de roteiro: reunião pedagógica temática (50 min)</div>
+          <ol class="roteiro-list">
+            <li><span class="rot-min">5 min</span><span><strong>Acolhida e retomada dos combinados</strong> — retomar os encaminhamentos anteriores e apresentar o tema do dia.</span></li>
+            <li><span class="rot-min">10 min</span><span><strong>Relato de uma prática do componente</strong> — um docente apresenta uma atividade realizada com suas turmas.</span></li>
+            <li><span class="rot-min">15 min</span><span><strong>Análise coletiva a partir de uma pergunta orientadora</strong> — ex.: “O que essa prática nos ensina sobre como envolver os estudantes nas atividades de reflexão?”</span></li>
+            <li><span class="rot-min">15 min</span><span><strong>Planejamento conjunto de uma atividade para as turmas</strong> — em duplas ou pequenos grupos, adaptando a prática discutida.</span></li>
+            <li><span class="rot-min">5 min</span><span><strong>Registro dos encaminhamentos e definição do próximo tema</strong> — o que cada docente vai aplicar e quem fará o próximo relato.</span></li>
+          </ol>
+        </div>
+        <div class="detail-section">
+          <div class="detail-label">👥 Exemplos de comunidades de prática</div>
+          <ul class="detail-list">
+            <li><span><strong>Grupos on-line de docentes do componente</strong>, para compartilhar planos de aula, materiais e relatos de prática.</span></li>
+            <li><span><strong>Duplas de mentoria</strong> entre professores experientes e iniciantes no componente.</span></li>
+            <li><span><strong>Encontros periódicos entre escolas da rede estadual</strong> para socialização de práticas.</span></li>
+          </ul>
+          <p class="extra-note">Incluído em resposta às avaliações dos profissionais da rede, que pediram mais exemplos de trabalho colaborativo.</p>
         </div>
       </div>
       <div class="feedback-encerrado">
@@ -395,7 +410,7 @@ footer{text-align:center;padding:20px;color:var(--muted);font-size:12px;border-t
       <div class="tl-content">
         <div class="tl-fase">Fase 1 · Diagnóstico</div>
         <div class="tl-title">Pesquisa com Professores — Google Forms</div>
-        <div class="tl-desc">Aplicação de formulário junto a docentes da rede estadual do Paraná para identificar fragilidades nos componentes do Projeto de Vida. Base da Análise de Necessidades de Treinamento (ANT).</div>
+        <div class="tl-desc">Aplicação de formulário junto a docentes da rede estadual do Paraná para identificar fragilidades nos componentes do Projeto de Vida. Base da Avaliação de Necessidades de Treinamento (ANT).</div>
       </div>
     </div>
     <div class="tl-item">
@@ -411,7 +426,7 @@ footer{text-align:center;padding:20px;color:var(--muted);font-size:12px;border-t
       <div class="tl-content">
         <div class="tl-fase">Fase 3 · Desenvolvimento</div>
         <div class="tl-title">Construção das 4 Trilhas e 16 Estratégias</div>
-        <div class="tl-desc">Elaboração fundamentada na TD&E (Abbad, Zerbini & Mourão, 2021) e alinhada à BNCC e ao Referencial Curricular do Paraná.</div>
+        <div class="tl-desc">Elaboração fundamentada na TD&E (Borges-Andrade, Abbad & Mourão, 2006) e alinhada à BNCC e ao Referencial Curricular do Paraná.</div>
       </div>
     </div>
     <div class="tl-item">
@@ -453,13 +468,13 @@ footer{text-align:center;padding:20px;color:var(--muted);font-size:12px;border-t
   <div class="sobre-grid">
     <div class="sobre-card">
       <h3>🎓 Dissertação PPGEN/UTFPR</h3>
-      <p>Produto educacional do Mestrado Profissional em Educação Profissional e Tecnológica — PPGEN/UTFPR, 2026. Voltado à formação de docentes do componente <strong>Projeto de Vida</strong> da rede estadual do Paraná.</p>
+      <p>Produto educacional do Mestrado Profissional em Ensino de Ciências Humanas, Sociais e da Natureza — PPGEN/UTFPR, 2026. Voltado à formação de docentes do componente <strong>Projeto de Vida</strong> da rede estadual do Paraná.</p>
     </div>
     <div class="sobre-card">
       <h3>🧪 Referencial Teórico</h3>
       <ul>
-        <li><strong>ANT</strong> — Análise de Necessidades de Treinamento (Abbad & Mourão, 2012)</li>
-        <li><strong>TD&E</strong> — Treinamento, Desenvolvimento e Educação (Abbad, Zerbini & Mourão, 2021)</li>
+        <li><strong>ANT</strong> — Avaliação de Necessidades de Treinamento (Abbad & Mourão, 2012)</li>
+        <li><strong>TD&E</strong> — Treinamento, Desenvolvimento e Educação (Borges-Andrade, Abbad & Mourão, 2006)</li>
         <li><strong>BNCC</strong> — Base Nacional Comum Curricular (Brasil, 2018)</li>
         <li><strong>RCP</strong> — Referencial Curricular do Paraná</li>
       </ul>
